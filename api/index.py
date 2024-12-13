@@ -26,7 +26,7 @@ def setHeaders(self, code):
 
 
 def DATE_ERROR(self):
-    writeResponse(self, HTTP_CODE["BAD_REQUEST"], "Invalid date format")
+    writeResponse(self, HTTP_CODE["BAD_REQUEST"], "Invalid date. Maybe today's comic is not available yet.")
     return
 
 
@@ -49,11 +49,10 @@ class handler(BaseHTTPRequestHandler):
         if len(path_components) < 1 or not path_components[0]:
             NOT_FOUND(self)
             return
+        
         comicQuery = path_components[0].lower()
-        print(comicQuery)
 
         queryComponents = parse_qs(parsed_path.query)
-        print(queryComponents)
 
         dateText = queryComponents.get("date", [""])[0]
 
