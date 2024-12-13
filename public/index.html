@@ -145,9 +145,9 @@
 
                 let url;
                 if (!comicDate) {
-                    url = `http://localhost:3000/${comicName}`;
+                    url = `/${comicName}`;
                 } else {
-                    url = `http://localhost:3000/${comicName}?date=${comicDate}`;
+                    url = `/${comicName}?date=${comicDate}`;
                 }
 
                 resultElement.innerText = 'Thinking...';
