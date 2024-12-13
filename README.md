@@ -1,24 +1,18 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fhello-world&demo-title=Python%20Hello%20World&demo-description=Use%20Python%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fpython-hello-world.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994600/random/python.png)
+# Daily Comic
 
-# Python Hello World
-
-This example shows how to use Python on Vercel with Serverless Functions using the [Python Runtime](https://vercel.com/docs/concepts/functions/serverless-functions/runtimes/python).
-
-## Demo
-
-https://python-hello-world.vercel.app/
+Get the daily comic for 400+ comics via API call. Wraps the python [irahorecka/comics](https://github.com/irahorecka/comics) package in a web API that returns a static (generally hosted by the comic syndication service) URL to the image.
 
 ## Running Locally
+
+This API was made to run on [Vercel](https://vercel.com/) and it can be ran locally with the [Vercel CLI](https://vercel.com/docs/cli)
 
 ```bash
 npm i -g vercel
 vercel dev
 ```
+The API is now available at `http://localhost:3000/api`.
 
-Your Python API is now available at `http://localhost:3000/api`.
+## One-Click Deploy on Vercel
+You can instantly deploy this project on Vercel by clicking the button below 
 
-## One-Click Deploy
-
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fhello-world&demo-title=Python%20Hello%20World&demo-description=Use%20Python%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fpython-hello-world.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994600/random/python.png)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhelloimbernardo%2Fdaily-comic&project-name=daily-comic&repository-name=daily-comic&demo-title=Daily%20Comic&demo-description=Get%20the%20daily%20comic%20for%20400%2B%20comics%20via%20API%20call&demo-url=https%3A%2F%2Fdailycomic.vercel.app%2F)
