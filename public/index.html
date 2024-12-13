@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comic Search</title>
+    <style>
+        :root {
+            font-family: 'Inter', 'Helvetica', Arial, sans-serif;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: none;
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            position: absolute;
+            background-color: white;
+            width: 200px;
+        }
+
+        li {
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        li:hover,
+        li.selected {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Comic Search</h1>
+    <p>Search for a comic by name and date.</p>
+    <noscript>
+        <h2>JavaScript is disabled or not available</h2>
+        <p>Please enable JavaScript to test the API inside this page.</p>
+    </noscript>
+    <p id="apiInfo">You can use the API by appending <code>/[name of comic]</code> to this URL</p>
+    <form id="comicForm">
+        <label for="comicName">Comic Name:</label>
+        <input type="text" id="comicName" name="comicName" autocomplete="off" required disabled aria-disabled="true">
+        <ul id="comicList"></ul>
+        <label for="comicDate">Date (MM-DD-YYYY):</label>
+        <input type="text" id="comicDate" name="comicDate" pattern="\d{2}-\d{2}-\d{4}" title="MM-DD-YYYY"
+            autocomplete="off" disabled aria-disabled="true">
+        <button type="submit" id="submit" disabled aria-disabled="true">Search</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const apiInfo = document.getElementById('apiInfo');
+            const currentPath = window.location.origin;
+            apiInfo.innerHTML = `You can use the API by visiting <code>${currentPath}/[name of comic]</code>`;
+            
+            const comicNameInput = document.getElementById('comicName');
+            comicNameInput.removeAttribute('disabled');
+            comicNameInput.removeAttribute('aria-disabled');
+            comicNameInput.focus();
+            const comicDateInput = document.getElementById('comicDate');
+            comicDateInput.removeAttribute('disabled');
+            comicDateInput.removeAttribute('aria-disabled');
+            const submitButton = document.getElementById('submit');
+            submitButton.removeAttribute('disabled');
+            submitButton.removeAttribute('aria-disabled');
+            
+
+            fetch('/comics.json')
+                .then(response => response.json())
+                .then(data => {
+                    const comicList = document.getElementById('comicList');
+
+                    data.forEach(comic => {
+                        const li = document.createElement('li');
+                        li.textContent = comic;
+                        li.addEventListener('click', function () {
+                            comicNameInput.value = comic;
+                            comicList.style.display = 'none';
+                        });
+                        comicList.appendChild(li);
+                    });
+
+                    comicNameInput.addEventListener('focus', function () {
+                        comicList.style.display = 'block';
+                    });
+
+                    comicNameInput.addEventListener('input', function () {
+                        const filter = this.value.toLowerCase();
+                        const items = comicList.getElementsByTagName('li');
+                        Array.from(items).forEach(item => {
+                            const text = item.textContent.toLowerCase();
+                            item.style.display = text.includes(filter) ? '' : 'none';
+                        });
+                    });
+
+                    comicNameInput.addEventListener('blur', function () {
+                        setTimeout(() => {
+                            comicList.style.display = 'none';
+                        }, 100); // Delay to allow click event to register
+                    });
+                });
+
+            document.getElementById('comicForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                const comicName = comicNameInput.value.trim();
+                const comicDate = comicDateInput.value.trim();
+                const resultElement = document.getElementById('result');
+
+                if (!comicName) {
+                    resultElement.innerText = 'Error: Comic name is required.';
+                    return;
+                }
+
+                let url;
+                if (!comicDate) {
+                    url = `http://localhost:3000/${comicName}`;
+                } else {
+                    url = `http://localhost:3000/${comicName}?date=${comicDate}`;
+                }
+
+                resultElement.innerText = 'Thinking...';
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        resultElement.innerText = data;
+                    })
+                    .catch(error => {
+                        resultElement.innerText = 'Error: ' + error.message;
+                    });
+            });
+        });
+    </script>
+</body>
+
+</html>
